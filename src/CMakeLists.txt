@@ -1,7 +1,9 @@
 add_library(
-    my-lib
+    card
     card.h
     card.cpp
 )
 
-target_include_directories(my-lib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+
+
+target_include_directories(card PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
