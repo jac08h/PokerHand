@@ -7,6 +7,7 @@ target_link_libraries(
     ${This} PUBLIC
     gtest_main
     card
+    pokerhand
 )
 
 add_test(
