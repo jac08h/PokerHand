@@ -6,7 +6,7 @@
 
 #include "card.h"
 
-std::map<char, int> card_values = {
+std::map<char, int> CARD_VALUES = {
     {'2', 2},
     {'3', 3},
     {'4', 4},
@@ -18,8 +18,8 @@ std::map<char, int> card_values = {
     {'T', 10},
     {'J', 11},
     {'Q', 12},
-    {'K', 14},
-    {'A', 15},
+    {'K', 13},
+    {'A', 14},
 };
 std::vector<char> POSSIBLE_SUITS {'S', 'H', 'D', 'C'};
 std::vector<char> POSSIBLE_VALUES {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
@@ -35,7 +35,7 @@ Card::Card(std::string card) {
 
 }
 
-bool Card::check_correctness(std::string card) {
+void Card::check_correctness(std::string card) {
     std::string error_message;
 
     if (card.length() != 2) {
@@ -56,8 +56,8 @@ bool Card::check_correctness(std::string card) {
     }
 }
 
-
 int Card::get_card_value() {
+    return CARD_VALUES.at(m_value);
 }
 
 std::ostream& operator<<(std::ostream& os, const Card& poker_card) {

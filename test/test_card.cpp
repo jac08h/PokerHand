@@ -33,3 +33,10 @@ TEST(TestCard, ValidInitializations) {
         }
     }
 }
+
+TEST(TestCard, GetCardValue) {
+    EXPECT_EQ(Card{"4S"}.get_card_value(), 4);
+    EXPECT_EQ(Card{"9S"}.get_card_value(), 9);
+    EXPECT_EQ(Card{"TS"}.get_card_value(), 10);
+    EXPECT_EQ(Card{"AS"}.get_card_value(), 14);
+}
