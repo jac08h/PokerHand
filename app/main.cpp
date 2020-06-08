@@ -11,8 +11,10 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 
 int main()
 {
-    Card p = Card{"3D"};
-
-    std::cout << p << std::endl;
     PokerHand hand ("KS 2H 5C JD TD");
+    hand.print_cards();
+
+
+
+    std::cout << std::endl;  // don't remove
 }

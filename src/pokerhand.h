@@ -19,8 +19,9 @@ private:
     int highest_card();
 
 public:
-    PokerHand(const char* pokerhand) {};
+    PokerHand(const char* pokerhand);
     int rank_card(); // 1 (high card) - 10 (royal flush)
+    void print_cards();
 };
 
 #endif // POKERHAND_H
