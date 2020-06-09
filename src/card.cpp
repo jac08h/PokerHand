@@ -6,24 +6,6 @@
 
 #include "card.h"
 
-std::map<char, int> CARD_VALUES = {
-    {'2', 2},
-    {'3', 3},
-    {'4', 4},
-    {'5', 5},
-    {'6', 6},
-    {'7', 7},
-    {'8', 8},
-    {'9', 9},
-    {'T', 10},
-    {'J', 11},
-    {'Q', 12},
-    {'K', 13},
-    {'A', 14},
-};
-std::vector<char> POSSIBLE_SUITS {'S', 'H', 'D', 'C'};
-std::vector<char> POSSIBLE_VALUES {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
-
 Card::Card(std::string card) {
     try {
         check_correctness(card);
@@ -45,19 +27,19 @@ void Card::check_correctness(std::string card) {
     char value = card.at(0);
     char suit = card.at(1);
 
-    if (std::find(POSSIBLE_VALUES.begin(), POSSIBLE_VALUES.end(), value) == POSSIBLE_VALUES.end()) {
+    if (std::find(constants::POSSIBLE_VALUES.begin(), constants::POSSIBLE_VALUES.end(), value) == constants::POSSIBLE_VALUES.end()) {
         error_message = std::string("Invalid card value. ") + card;
         throw std::runtime_error(error_message);
     }
 
-    if (std::find(POSSIBLE_SUITS.begin(), POSSIBLE_SUITS.end(), suit) == POSSIBLE_SUITS.end()) {
+    if (std::find(constants::POSSIBLE_SUITS.begin(), constants::POSSIBLE_SUITS.end(), suit) == constants::POSSIBLE_SUITS.end()) {
         error_message = std::string("Invalid card suit. ") + card;
         throw std::runtime_error(error_message);
     }
 }
 
-int Card::get_card_value() {
-    return CARD_VALUES.at(m_value);
+int Card::get_int_value() {
+    return constants::CARD_VALUES.at(m_value);
 }
 
 std::ostream& operator<<(std::ostream& os, const Card& poker_card) {

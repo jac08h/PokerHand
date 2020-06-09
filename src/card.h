@@ -2,6 +2,7 @@
 #define CARD_H
 
 #include <string>
+#include "constants.h"
 
 class Card
 {
@@ -13,7 +14,9 @@ private:
 public:
     Card();
     Card(std::string card);
-    int get_card_value(); // Return numeric representation of card's value
+    int get_int_value(); // Return numeric representation of card's value
+    char get_char_value() {return m_value;};
+    char get_suit() {return m_suit;};
     friend std::ostream& operator<<(std::ostream& os, const Card& poker_card);
 };
 

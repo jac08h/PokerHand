@@ -11,8 +11,9 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 
 int main()
 {
-    PokerHand hand ("KS 2H 5C JD TD");
-    hand.print_cards();
+    PokerHand hand{"KS QH AC JS TD"};
+    bool s = hand.is_straight();
+    std::cout << s;
 
 
 
