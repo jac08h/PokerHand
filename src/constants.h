@@ -23,6 +23,7 @@ namespace constants {
     inline std::vector<char> POSSIBLE_SUITS {'S', 'H', 'D', 'C'};
     inline std::vector<char> POSSIBLE_VALUES {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
     inline int NUMBER_OF_CARDS_IN_HAND = 5;
+    inline int HIGHEST_CARD_VALUE = 14;
 }
 
 

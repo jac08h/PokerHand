@@ -2,17 +2,22 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <exception>
 
 #include "pokerhand.h"
 #include "card.h"
 #include "constants.h"
 
-PokerHand::PokerHand(const char* pokerhand) 
+PokerHand::PokerHand(const std::string hand_string) 
 {
-    // TODO: Handle invalid output
-    std::string pokerhand_string = std::string(pokerhand);
-    std::stringstream ss(pokerhand);
+    m_cards = string_to_cards(hand_string);
+}
+
+std::vector<Card> PokerHand::string_to_cards(const std::string hand_string) 
+{
+    std::stringstream ss(hand_string);
     std::vector<std::string> cards_as_string;
+    std::vector<Card> cards;
 
     while (ss.good()) {
         std::string substr;
@@ -22,13 +27,22 @@ PokerHand::PokerHand(const char* pokerhand)
 
     for (std::string card_string:cards_as_string) {
         Card c{card_string};
-        m_cards.push_back(c);
+        cards.push_back(c);
     }
 
-    if (m_cards.size() != constants::NUMBER_OF_CARDS_IN_HAND) {
+    if (cards.size() != constants::NUMBER_OF_CARDS_IN_HAND) {
         std::string error_message = std::string("Invalid number of cards."); 
         throw std::runtime_error(error_message);
     }
+    return cards;
+}
+
+
+
+
+void PokerHand::update_hand(const std::string hand_string) 
+{
+    m_cards = string_to_cards(hand_string);
 }
 
 
@@ -56,9 +70,6 @@ bool PokerHand::is_straight()
         card_values.push_back(card.get_int_value());
     }
     std::sort(card_values.begin(), card_values.end());
-    for (int value: card_values) {
-        std::cout << value << std::endl;
-    }
 
     int current_value = card_values.at(0);
     int next_value;
@@ -85,4 +96,56 @@ bool PokerHand::is_flush()
         }
     }
     return true;
+}
+
+bool PokerHand::is_royal_flush() 
+{
+    if (is_flush() && is_straight() && highest_card() == constants::HIGHEST_CARD_VALUE) {
+        return true;
+    }
+    return false;
+}
+
+
+bool PokerHand::is_straight_flush() 
+{
+    if (is_flush() && is_straight() && highest_card() != constants::HIGHEST_CARD_VALUE) {
+        return true;
+    }
+    return false;
+    
+}
+
+bool PokerHand::is_x_of_a_kind(int x) 
+{
+    std::map<int, int> card_occurences;
+    for (Card c: m_cards) {
+        card_occurences[c.get_int_value()]++;
+    }
+    for (auto const& [card_value, occurences]: card_occurences) {
+        if (occurences == x) {
+            return true;
+        }
+    }
+    return false;
+}    
+
+bool PokerHand::is_full_house() 
+{
+    if (is_x_of_a_kind(3) && is_x_of_a_kind(2)) {
+        return true;
+    }
+    return false;
+}
+
+int PokerHand::rank_hand() 
+{
+    if (is_royal_flush()) { return 10;}
+    if (is_straight_flush()) {return 9;}
+    if (is_x_of_a_kind(4)) {return 8;}
+    if (is_full_house()) {return 7;}
+    if (is_flush()) {return 6;}
+    if (is_straight()) {return 5;}
+    return -1;
+
 }

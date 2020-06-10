@@ -11,9 +11,23 @@ TEST(TestPokerHand, InvalidInitializations) {
     EXPECT_THROW(PokerHand{"2S 2S 2S 2S 2S 2S"}, std::runtime_error);
 }
 
-TEST(TestPokerHand, HighestCard) {
-    PokerHand ph{"4S 5D 2H TD JS"};
-    EXPECT_EQ(ph.highest_card(), 11);
+TEST(TestPokerHand, UpdateHand) {
+    PokerHand ph{"TS JS QS KS AS"};
 }
 
-// TODO: Test flush, straight
+TEST(TestPokerHand, RankCard) {
+    PokerHand ph{"TS JS QS KS AS"};
+    EXPECT_EQ(ph.rank_hand(), 10);
+
+    ph.update_hand("3D 4D 5D 6D 7D");
+    EXPECT_EQ(ph.rank_hand(), 9);
+
+    ph.update_hand("KD KS KH KC 7D");
+    EXPECT_EQ(ph.rank_hand(), 8);
+
+    ph.update_hand("3D 4D 8D 2D AD");
+    EXPECT_EQ(ph.rank_hand(), 6);
+
+    ph.update_hand("3D 4S 5H 6D 7H");
+    EXPECT_EQ(ph.rank_hand(), 5);
+}
