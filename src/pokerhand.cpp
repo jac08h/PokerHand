@@ -38,6 +38,15 @@ std::vector<Card> PokerHand::string_to_cards(const std::string hand_string)
 }
 
 
+std::map<int, int> PokerHand::count_card_occurences() 
+{
+    std::map<int, int> card_occurences;
+    for (Card c: m_cards) {
+        card_occurences[c.get_int_value()]++;
+    }
+    return card_occurences;
+}
+
 
 
 void PokerHand::update_hand(const std::string hand_string) 
@@ -98,6 +107,23 @@ bool PokerHand::is_flush()
     return true;
 }
 
+
+bool PokerHand::is_two_of_a_kind() 
+{
+    std::map<int, int> card_occurences = count_card_occurences();
+    int pairs = 0;
+    for (auto const& [card_value,occurences] : card_occurences ) {
+        if (occurences == 2) {
+            ++pairs;
+        }
+    }
+    if (pairs == 2) {
+        return true;
+    }
+    return false;
+
+}
+
 bool PokerHand::is_royal_flush() 
 {
     if (is_flush() && is_straight() && highest_card() == constants::HIGHEST_CARD_VALUE) {
@@ -118,10 +144,7 @@ bool PokerHand::is_straight_flush()
 
 bool PokerHand::is_x_of_a_kind(int x) 
 {
-    std::map<int, int> card_occurences;
-    for (Card c: m_cards) {
-        card_occurences[c.get_int_value()]++;
-    }
+    std::map<int, int> card_occurences = count_card_occurences();
     for (auto const& [card_value, occurences]: card_occurences) {
         if (occurences == x) {
             return true;
@@ -146,6 +169,9 @@ int PokerHand::rank_hand()
     if (is_full_house()) {return 7;}
     if (is_flush()) {return 6;}
     if (is_straight()) {return 5;}
-    return -1;
+    if (is_x_of_a_kind(3)) {return 4;}
+    if (is_two_of_a_kind()) {return 3;}
+    if (is_x_of_a_kind(2)) {return 2;}
+    return 1; // high card
 
 }

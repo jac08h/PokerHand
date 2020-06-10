@@ -13,6 +13,7 @@ private:
     std::vector<Card> m_cards;
 
     std::vector<Card> string_to_cards(const std::string hand_string);
+    std::map<int, int> count_card_occurences();
 
     bool is_full_house();
     bool is_x_of_a_kind(int x);
@@ -20,6 +21,7 @@ private:
     int highest_card();
     bool is_straight();
     bool is_flush();
+    bool is_two_of_a_kind();
 
     bool is_royal_flush();
     bool is_straight_flush();
