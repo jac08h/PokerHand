@@ -12,6 +12,8 @@ add_library(
     pokerhand.cpp
     pokerhandranker.h
     pokerhandranker.cpp
+    pokerhandcomparer.h
+    pokerhandcomparer.cpp
 )
 
 add_library(
