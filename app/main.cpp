@@ -3,12 +3,6 @@
 #include "pokerhand.h"
 #include "pokerhandranker.h"
 
-enum class Result { Win, Loss, Tie };
-
-Result compare (const PokerHand &player, const PokerHand &opponent) {
-  return Result::Loss;
-}
-
 
 int main()
 {

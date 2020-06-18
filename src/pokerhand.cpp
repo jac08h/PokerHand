@@ -13,6 +13,26 @@ PokerHand::PokerHand(const std::string hand_string)
     m_cards = string_to_cards(hand_string);
 }
 
+
+std::vector<int> PokerHand::get_sorted_cards_values() const
+{
+   std::vector<int> card_values; 
+   for (Card c: m_cards) {
+       card_values.push_back(c.get_int_value());
+   }
+   std::sort(card_values.begin(), card_values.end(), std::greater<>());
+   return card_values;
+}
+
+int PokerHand::get_highest_card() const
+{
+    int highest_card = -1;
+    for (Card c:m_cards) {
+        highest_card = std::max(c.get_int_value(), highest_card);
+    }
+    return highest_card;
+}
+
 std::vector<Card> PokerHand::string_to_cards(const std::string hand_string) 
 {
     std::stringstream ss(hand_string);
