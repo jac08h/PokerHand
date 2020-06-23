@@ -10,19 +10,24 @@ int main()
 {
     PokerHandRanker ranker = PokerHandRanker();
     PokerHandComparer comparer = PokerHandComparer();
-    PokerHand first{"TD 9D 8D 7D 6D"};
-    PokerHand second{"TD 9D 8D 7D 6D"};
+    PokerHand first{"AS AD QS QD 2S"};
+    PokerHand second{"AS AD JS JD 2S"};
 
 
+    // auto rank = ranker.rank_hand(first);
     constants::Result res = comparer.compare_cards(first, second);
+
+
+
+
     if (res == constants::Result::Tie) {
-        std::cout << "Second wins";
+        std::cout << "Tie";
     }
     else if (res == constants::Result::FirstWins) {
         std::cout << "First wins";
     }
     else {
-        std::cout << "Tie";
+        std::cout << "Second wins";
     }
 
     std::cout << std::endl;  // don't remove

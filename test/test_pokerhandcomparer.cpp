@@ -61,5 +61,29 @@ TEST(TestPokerHandComparer, TieBreakers) {
     second.update_hand("AD AS AH KS 2S");
     EXPECT_EQ(comparer.compare_cards(first, second),  constants::Result::SecondWins);
 
+    // Two pairs
+    // Higher second pair
+    first.update_hand("AD AS KH KS 6S");
+    second.update_hand("AD AS QH QS 2S");
+    EXPECT_EQ(comparer.compare_cards(first, second),  constants::Result::FirstWins);
+
+    // Higher fifth card
+    first.update_hand("AD AS KH KS 6S");
+    second.update_hand("AD AS KH KS 7S");
+    EXPECT_EQ(comparer.compare_cards(first, second),  constants::Result::SecondWins);
+
+    // One pair
+    // Higher pair
+    first.update_hand("2D 2S 3H KS AS");
+    second.update_hand("3D 3S 2D 8D 7S");
+    EXPECT_EQ(comparer.compare_cards(first, second),  constants::Result::SecondWins);
+
+    // High card
+    // Second highest
+    first.update_hand("2D 4S 3H KS QS");
+    second.update_hand("3D 5S 2D 8D KS");
+    EXPECT_EQ(comparer.compare_cards(first, second),  constants::Result::FirstWins);
+    
+
 
 }

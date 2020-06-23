@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <cassert>
+
 #include "pokerhandcomparer.h"
 
 std::map<int, int> PokerHandComparer::count_card_occurences(const PokerHand &h) 
@@ -17,6 +20,25 @@ int PokerHandComparer::get_value_of_x_of_a_kind(int x, const PokerHand &h)
             return card_value;
         }
     }
+}
+
+
+std::pair<int, int> PokerHandComparer::get_sorted_values_of_two_pairs(const PokerHand &h) 
+{
+    int first_pair_value = -1;
+    int second_pair_value = -1;
+    std::map<int, int> card_occurences = count_card_occurences(h);
+    for (auto const& [card_value, occurences]: card_occurences) {
+        if (occurences == 2) {
+            if (first_pair_value == -1) {
+                first_pair_value = card_value;
+            }
+            else {
+                second_pair_value = card_value;
+            }
+        }
+    }
+    std::pair<int, int> sorted_values = std::minmax({first_pair_value, second_pair_value}, std::greater<>());
 }
 
 constants::Result PokerHandComparer::compare_hands_with_identical_rank(const PokerHand &first, const PokerHand &second, constants::HandRank rank) 
@@ -70,11 +92,9 @@ constants::Result PokerHandComparer::compare_hands_with_identical_rank(const Pok
     if (rank == constants::HandRank::FLUSH) {
         return compared_sorted;
     }
-
     if (rank == constants::HandRank::STRAIGHT) {
         return compared_sorted;
     }
-
     if (rank == constants::HandRank::THREE_OF_A_KIND) {
         // higher triplet -> fourth card -> fifth card
         int first_triplet_value = get_value_of_x_of_a_kind(3, first);
@@ -90,8 +110,49 @@ constants::Result PokerHandComparer::compare_hands_with_identical_rank(const Pok
             return compared_sorted;
         }
     }
+    if (rank == constants::HandRank::TWO_PAIR) {
+        std::pair<int,int> first_hand_pairs = get_sorted_values_of_two_pairs(first);
+        std::pair<int,int> second_hand_pairs = get_sorted_values_of_two_pairs(second);
 
-    return constants::Result::Tie;
+        if (first_hand_pairs.first > second_hand_pairs.first) {
+            return constants::Result::FirstWins;
+        }
+        else if (second_hand_pairs.first > first_hand_pairs.first) {
+            return constants::Result::SecondWins;
+        }
+
+        else {
+            if (first_hand_pairs.second > second_hand_pairs.second) {
+                return constants::Result::FirstWins;
+            }
+            else if (second_hand_pairs.second > first_hand_pairs.second) {
+                return constants::Result::SecondWins;
+            }
+            else {
+                return compared_sorted;
+            }
+        }
+    }
+    if (rank == constants::HandRank::ONE_PAIR) {
+        // higher pair -> comparing cards
+        int first_pair_value = get_value_of_x_of_a_kind(2, first);
+        int second_pair_value = get_value_of_x_of_a_kind(2, second);
+        if (first_pair_value > second_pair_value) {
+            return constants::Result::FirstWins;
+        }
+        else if (second_pair_value > first_pair_value) {
+            return constants::Result::SecondWins;
+        }
+        else {
+            return compared_sorted;
+        }
+    }
+    if (rank == constants::HandRank::HIGH_CARD) {
+        return compared_sorted;
+    }
+
+    assert(0 && "The card should be ranked by this time.");
+
 }
 
 
@@ -109,6 +170,7 @@ constants::Result PokerHandComparer::compare_sorted_hands(const PokerHand &first
     }
     return constants::Result::Tie; // identical hands
 }
+
 
 constants::Result PokerHandComparer::compare_cards(const PokerHand &first, const PokerHand &second) 
 {
