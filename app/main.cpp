@@ -9,8 +9,21 @@
 int main()
 {
     PokerHandRanker ranker = PokerHandRanker();
-    PokerHand hand{"AS QS KS JS TS"};
-    std::cout << static_cast<int>(ranker.rank_hand(hand)); 
+    PokerHandComparer comparer = PokerHandComparer();
+    PokerHand first{"TD 9D 8D 7D 6D"};
+    PokerHand second{"TD 9D 8D 7D 6D"};
+
+
+    constants::Result res = comparer.compare_cards(first, second);
+    if (res == constants::Result::Tie) {
+        std::cout << "Second wins";
+    }
+    else if (res == constants::Result::FirstWins) {
+        std::cout << "First wins";
+    }
+    else {
+        std::cout << "Tie";
+    }
 
     std::cout << std::endl;  // don't remove
 }

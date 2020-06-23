@@ -27,16 +27,16 @@ namespace constants {
 
     enum class Result { FirstWins, Tie, SecondWins};
     enum class HandRank {
-        ROYAL_FLUSH,
-        STRAIGHT_FLUSH,
-        FOUR_OF_A_KIND,
-        FULL_HOUSE,
-        FLUSH,
-        STRAIGHT,
-        THREE_OF_A_KIND,
-        TWO_PAIR,
-        ONE_PAIR,
         HIGH_CARD,
+        ONE_PAIR,
+        TWO_PAIR,
+        THREE_OF_A_KIND,
+        STRAIGHT,
+        FLUSH,
+        FULL_HOUSE,
+        FOUR_OF_A_KIND,
+        STRAIGHT_FLUSH,
+        ROYAL_FLUSH,
         };
 }
 

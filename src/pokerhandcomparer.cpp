@@ -50,11 +50,9 @@ constants::Result PokerHandComparer::compare_hands_with_identical_rank(const Pok
             return constants::Result::SecondWins;
         }
         else { // four-of-a-kind lands on the table, last highest card decides
-            return compare_sorted_hands(first, second);
+            return compared_sorted;
         }
     }
-
-
     if (rank == constants::HandRank::FULL_HOUSE) {
         // higher triplet -> higher pair
         int first_triplet_value = get_value_of_x_of_a_kind(3, first);
@@ -66,7 +64,30 @@ constants::Result PokerHandComparer::compare_hands_with_identical_rank(const Pok
             return constants::Result::SecondWins;
         }
         else {
-            return compare_sorted_hands(first, second);
+            return compared_sorted;
+        }
+    }
+    if (rank == constants::HandRank::FLUSH) {
+        return compared_sorted;
+    }
+
+    if (rank == constants::HandRank::STRAIGHT) {
+        return compared_sorted;
+    }
+
+    if (rank == constants::HandRank::THREE_OF_A_KIND) {
+        // higher triplet -> fourth card -> fifth card
+        int first_triplet_value = get_value_of_x_of_a_kind(3, first);
+        int second_triplet_value = get_value_of_x_of_a_kind(3, second);
+        if (first_triplet_value > second_triplet_value) {
+            return constants::Result::FirstWins;
+        }
+        else if (second_triplet_value > first_triplet_value) {
+            return constants::Result::SecondWins;
+        }
+
+        else {
+            return compared_sorted;
         }
     }
 
@@ -78,7 +99,7 @@ constants::Result PokerHandComparer::compare_sorted_hands(const PokerHand &first
 {
     std::vector<int> sorted_first = first.get_sorted_cards_values();
     std::vector<int> sorted_second = second.get_sorted_cards_values();
-    for (int i=0; i<constants::number_of_cards_in_hand; ++i) {
+    for (int i=0; i<constants::number_of_cards_in_hand; i++) {
         if (sorted_first.at(i) > sorted_second.at(i)) {
             return constants::Result::FirstWins;
         }
